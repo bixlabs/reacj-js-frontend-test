@@ -1,14 +1,22 @@
-import React from "react"
-import ServiceItem from "./ServiceItem"
+import React from "react";
+import { useSelector } from "react-redux";
+import ServiceItem from "./ServiceItem";
 
 const ServicesList = () => {
-    return (
-        <div className="row">
-            <ServiceItem heading="Resume Writing" detail="Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui." />
-            <ServiceItem heading="Career Coaching" detail="Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui." />
-            <ServiceItem heading="Linkedin Profile Update" detail="Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui." />
-        </div>
-    )
-}
+  const { services } = useSelector((state) => state.services);
+  console.log(services);
+  return (
+    <div className="row">
+      {services.map((service) => (
+        <ServiceItem
+          heading={service.serviceName}
+          detail={service.detail}
+          code={service.code}
+          key={service.id}
+        />
+      ))}
+    </div>
+  );
+};
 
-export default ServicesList
+export default ServicesList;
