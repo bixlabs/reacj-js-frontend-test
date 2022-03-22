@@ -1,10 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import LoadingComponent from "../../app/layout/loadingComponent";
 import ServiceItem from "./ServiceItem";
 
 const ServicesList = () => {
   const { services } = useSelector((state) => state.services);
-  console.log(services);
+  const { loading } = useSelector((state) => state.async);
+  console.log(loading);
+  if (loading) return <LoadingComponent />;
   return (
     <div className="row">
       {services.map((service) => (

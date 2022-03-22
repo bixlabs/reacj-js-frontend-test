@@ -5,8 +5,11 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureStore from './app/store/configureStore';
+import { loadServices } from './features/services/servicesActions';
 
 const store = configureStore()
+
+store.dispatch(loadServices())
 
 ReactDOM.render(
   <React.StrictMode>

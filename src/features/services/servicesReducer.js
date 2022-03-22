@@ -1,9 +1,18 @@
-import { sampleData } from "../../app/api/sampleData";
+import { FETCH_SERVICES } from "./servicesConstants";
 
 const initialState = {
-    services: sampleData
+    services: []
 }
 
 export default function servicesReducer(state = initialState, { type, payload }) {
-    return state
+    console.log(type, payload)
+    switch (type) {
+        case FETCH_SERVICES:
+            return {
+                ...state,
+                services: payload
+            }
+        default:
+            return state
+    }
 }
