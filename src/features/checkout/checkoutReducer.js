@@ -1,3 +1,5 @@
+import { CREATE_ORDER } from './checkoutConstants'
+
 const initialState = {
     order: {
         firstName: '',
@@ -16,5 +18,15 @@ const initialState = {
 }
 
 export default function checkoutReducer(state = initialState, { type, payload }) {
-    return state
+    switch (type) {
+        case CREATE_ORDER:
+            const newOrder = {
+                ...state,
+                payload
+            }
+            console.log(newOrder)
+            return newOrder
+        default:
+            return state
+    }
 }

@@ -1,6 +1,6 @@
 import { CREATE_ORDER } from './checkoutConstants'
 
-export function createOrder(order) {
+export default function createOrder(order) {
     return {
         type: CREATE_ORDER,
         payload: order
