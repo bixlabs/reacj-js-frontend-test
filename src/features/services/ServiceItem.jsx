@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 const ServiceItem = (props) => {
   const { code, heading, detail } = props;
-  console.log(code);
   return (
     <div className="col-md-4">
       <h2>{heading}</h2>

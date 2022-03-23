@@ -22,7 +22,7 @@ const TierItem = ({ slug, name, price, whatsIncluded }) => {
               type="button"
               className="btn btn-lg btn-block btn-outline-primary"
             >
-              Sign up for free
+              Buy now
             </button>
           </Link>
         </div>

@@ -10,13 +10,7 @@ const initialState = {
         state: '',
         zip: ''
     },
-    payment: {
-        provider: 'PayPal',
-        nameOnCard: '',
-        creditCardNumber: '',
-        expiration: '',
-        ccvNumber: '',
-    },
+    paymentProvider: "PayPal",
     purchase: {
         service: '',
         tier: '',
