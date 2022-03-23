@@ -4,29 +4,36 @@ import { createOrder } from "./checkoutActions";
 import { useFormik } from "formik";
 import { useParams } from "react-router-dom";
 import Cart from "./cart/Cart";
+import * as Yup from "yup";
 
 const Checkout = () => {
   const { service, tier } = useParams();
   const servicesList = useSelector((state) => state.services.services);
   const currentService = servicesList.find((serv) => serv.code === service);
   const currentTier = currentService.tiers.find((t) => t.name === tier);
+
   const formik = useFormik({
     initialValues: {
-      customer: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        address: "",
-        country: "",
-        state: "",
-        zip: "",
-      },
+      firstName: "",
+      lastName: "",
+      email: "",
+      address: "",
+      country: "",
+      state: "",
+      zip: "",
       paymentProvider: "PayPal",
-      purchase: {
-        service,
-        tier,
-      },
+      service,
+      tier,
     },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required("Required"),
+      lastName: Yup.string().required("Required"),
+      email: Yup.string().email("Invalid email address").required("Required"),
+      address: Yup.string().required("Required"),
+      country: Yup.string().required("Required"),
+      state: Yup.string().required("Required"),
+      zip: Yup.string().required("Required"),
+    }),
     onSubmit: (values) => {
       dispatch(createOrder(values));
     },
@@ -73,32 +80,30 @@ const Checkout = () => {
                   <input
                     type="text"
                     className="form-control"
-                    id="customer.firstName"
-                    name="customer.firstName"
-                    placeholder=""
-                    required=""
+                    id="firstName"
+                    name="firstName"
                     onChange={formik.handleChange}
-                    value={formik.values.customer.firstName}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.firstName}
                   />
-                  <div className="invalid-feedback">
-                    Valid first name is required.
-                  </div>
+                  {formik.touched.firstName && formik.errors.firstName ? (
+                    <p class="text-danger">Valid first name is required.</p>
+                  ) : null}
                 </div>
                 <div className="col-md-6 mb-3">
                   <label htmlFor="lastName">Last name</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="customer.lastName"
-                    name="customer.lastName"
-                    placeholder=""
-                    required=""
+                    id="lastName"
+                    name="lastName"
                     onChange={formik.handleChange}
-                    value={formik.values.customer.lastName}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.lastName}
                   />
-                  <div className="invalid-feedback">
-                    Valid last name is required.
-                  </div>
+                  {formik.touched.lastName && formik.errors.lastName ? (
+                    <p class="text-danger">Valid last name is required.</p>
+                  ) : null}
                 </div>
               </div>
 
@@ -109,16 +114,19 @@ const Checkout = () => {
                 <input
                   type="email"
                   className="form-control"
-                  id="customer.email"
+                  id="email"
                   placeholder="you@example.com"
-                  name="customer.email"
+                  name="email"
                   required=""
                   onChange={formik.handleChange}
-                  value={formik.values.customer.email}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
                 />
-                <div className="invalid-feedback">
-                  Please enter a valid email address for shipping updates.
-                </div>
+                {formik.touched.email && formik.errors.email ? (
+                  <p class="text-danger">
+                    Please enter a valid email address for shipping updates.
+                  </p>
+                ) : null}
               </div>
 
               <div className="mb-3">
@@ -126,16 +134,15 @@ const Checkout = () => {
                 <input
                   type="text"
                   className="form-control"
-                  id="customer.address"
-                  name="customer.address"
+                  id="address"
+                  name="address"
                   placeholder="1234 Main St"
-                  required=""
                   onChange={formik.handleChange}
-                  value={formik.values.customer.address}
+                  value={formik.values.address}
                 />
-                <div className="invalid-feedback">
-                  Please enter your shipping address.
-                </div>
+                {formik.touched.address && formik.errors.address ? (
+                  <p class="text-danger">Please enter your shipping address.</p>
+                ) : null}
               </div>
 
               <div className="row">
@@ -143,36 +150,36 @@ const Checkout = () => {
                   <label htmlFor="country">Country</label>
                   <select
                     className="custom-select d-block w-100"
-                    id="customer.country"
-                    name="customer.country"
-                    required=""
+                    id="country"
+                    name="country"
                     onChange={formik.handleChange}
-                    value={formik.values.customer.country}
+                    value={formik.values.country}
                   >
                     <option value="">Choose...</option>
                     <option>Argentina</option>
                     <option>United States</option>
                   </select>
-                  <div className="invalid-feedback">
-                    Please select a valid country.
-                  </div>
+                  {formik.touched.country && formik.errors.country ? (
+                    <p className="text-danger">
+                      Please select a valid country.
+                    </p>
+                  ) : null}
                 </div>
                 <div className="col-md-4 mb-3">
                   <label htmlFor="state">State</label>
                   <select
                     className="custom-select d-block w-100"
                     id="state"
-                    name="customer.state"
-                    required=""
+                    name="state"
                     onChange={formik.handleChange}
-                    value={formik.values.customer.state}
+                    value={formik.values.state}
                   >
                     <option value="">Choose...</option>
                     <option>California</option>
                   </select>
-                  <div className="invalid-feedback">
-                    Please provide a valid state.
-                  </div>
+                  {formik.touched.state && formik.errors.state ? (
+                    <p className="text-danger">Please provide a valid state.</p>
+                  ) : null}
                 </div>
                 <div className="col-md-3 mb-3">
                   <label htmlFor="zip">Zip</label>
@@ -180,35 +187,14 @@ const Checkout = () => {
                     type="text"
                     className="form-control"
                     id="zip"
-                    name="customer.zip"
-                    placeholder=""
-                    required=""
+                    name="zip"
                     onChange={formik.handleChange}
-                    value={formik.values.customer.zip}
+                    value={formik.values.zip}
                   />
-                  <div className="invalid-feedback">Zip code required.</div>
+                  {formik.touched.zip && formik.errors.zip ? (
+                    <p className="text-danger">Zip code required.</p>
+                  ) : null}
                 </div>
-              </div>
-              <hr className="mb-4" />
-              <div className="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  className="custom-control-input"
-                  id="same-address"
-                />
-                <label className="custom-control-label" htmlFor="same-address">
-                  Shipping address is the same as my billing address
-                </label>
-              </div>
-              <div className="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  className="custom-control-input"
-                  id="save-info"
-                />
-                <label className="custom-control-label" htmlFor="save-info">
-                  Save this information for next time
-                </label>
               </div>
               <hr className="mb-4" />
 
@@ -221,7 +207,8 @@ const Checkout = () => {
                     name="paymentMethod"
                     type="radio"
                     className="custom-control-input"
-                    required=""
+                    disabled
+                    selected
                   />
                   <label className="custom-control-label" htmlFor="paypal">
                     PayPal

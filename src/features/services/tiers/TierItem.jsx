@@ -14,7 +14,7 @@ const TierItem = ({ slug, name, price, whatsIncluded }) => {
           </h1>
           <ul className="list-unstyled mt-3 mb-4">
             {whatsIncluded.map((item) => (
-              <li>{item}</li>
+              <li key={Math.random().toString()}>{item}</li>
             ))}
           </ul>
           <Link to={"../checkout/" + slug + "/tier/" + name}>

@@ -14,7 +14,7 @@ const ServicesList = () => {
           heading={service.serviceName}
           detail={service.detail}
           code={service.code}
-          key={service.id}
+          key={service._id}
         />
       ))}
     </div>
