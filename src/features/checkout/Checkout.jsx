@@ -1,33 +1,38 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "./checkoutActions";
+import { useFormik } from "formik";
+import { useParams } from "react-router-dom";
 
 const Checkout = () => {
-  const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    address: "",
-    country: "",
-    state: "",
-    zip: "",
-    payment: "",
-    nameOnCard: "",
-    creditCardNumber: "",
-    expiration: "",
-    ccvNumber: "",
-  };
-
-  const [values, setValues] = useState(initialValues);
-
-  const handleSubmit = () => {
-    dispatch(createOrder(values));
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
-  };
+  const { service, tier } = useParams();
+  const formik = useFormik({
+    initialValues: {
+      customer: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        address: "",
+        country: "",
+        state: "",
+        zip: "",
+      },
+      payment: {
+        provider: "PayPal",
+        nameOnCard: "",
+        creditCardNumber: "",
+        expiration: "",
+        ccvNumber: "",
+      },
+      purchase: {
+        service,
+        tier,
+      },
+    },
+    onSubmit: (values) => {
+      dispatch(createOrder(values));
+    },
+  });
 
   const data = useSelector((state) => state.checkout.order);
   const dispatch = useDispatch();
@@ -109,19 +114,23 @@ const Checkout = () => {
           </div>
           <div className="col-md-8 order-md-1">
             <h4 className="mb-3">Billing address</h4>
-            <form className="needs-validation" noValidate="">
+            <form
+              className="needs-validation"
+              noValidate=""
+              onSubmit={formik.handleSubmit}
+            >
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <label htmlFor="firstName">First name</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="firstName"
-                    name="firstName"
+                    id="customer.firstName"
+                    name="customer.firstName"
                     placeholder=""
                     required=""
-                    value={values.firstName}
-                    onChange={(e) => handleInputChange(e)}
+                    onChange={formik.handleChange}
+                    value={formik.values.customer.firstName}
                   />
                   <div className="invalid-feedback">
                     Valid first name is required.
@@ -132,12 +141,12 @@ const Checkout = () => {
                   <input
                     type="text"
                     className="form-control"
-                    id="lastName"
-                    name="lastName"
+                    id="customer.lastName"
+                    name="customer.lastName"
                     placeholder=""
                     required=""
-                    value={values.lastName}
-                    onChange={(e) => handleInputChange(e)}
+                    onChange={formik.handleChange}
+                    value={formik.values.customer.lastName}
                   />
                   <div className="invalid-feedback">
                     Valid last name is required.
@@ -152,12 +161,12 @@ const Checkout = () => {
                 <input
                   type="email"
                   className="form-control"
-                  id="email"
+                  id="customer.email"
                   placeholder="you@example.com"
-                  name="email"
+                  name="customer.email"
                   required=""
-                  value={values.email}
-                  onChange={(e) => handleInputChange(e)}
+                  onChange={formik.handleChange}
+                  value={formik.values.customer.email}
                 />
                 <div className="invalid-feedback">
                   Please enter a valid email address for shipping updates.
@@ -169,28 +178,16 @@ const Checkout = () => {
                 <input
                   type="text"
                   className="form-control"
-                  id="address"
-                  name="address"
+                  id="customer.address"
+                  name="customer.address"
                   placeholder="1234 Main St"
                   required=""
-                  value={values.address}
-                  onChange={(e) => handleInputChange(e)}
+                  onChange={formik.handleChange}
+                  value={formik.values.customer.address}
                 />
                 <div className="invalid-feedback">
                   Please enter your shipping address.
                 </div>
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="address2">
-                  Address 2 <span className="text-muted">(Optional)</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="address2"
-                  placeholder="Apartment or suite"
-                />
               </div>
 
               <div className="row">
@@ -198,8 +195,11 @@ const Checkout = () => {
                   <label htmlFor="country">Country</label>
                   <select
                     className="custom-select d-block w-100"
-                    id="country"
+                    id="customer.country"
+                    name="customer.country"
                     required=""
+                    onChange={formik.handleChange}
+                    value={formik.values.customer.country}
                   >
                     <option value="">Choose...</option>
                     <option>Argentina</option>
@@ -214,7 +214,10 @@ const Checkout = () => {
                   <select
                     className="custom-select d-block w-100"
                     id="state"
+                    name="customer.state"
                     required=""
+                    onChange={formik.handleChange}
+                    value={formik.values.customer.state}
                   >
                     <option value="">Choose...</option>
                     <option>California</option>
@@ -229,8 +232,11 @@ const Checkout = () => {
                     type="text"
                     className="form-control"
                     id="zip"
+                    name="customer.zip"
                     placeholder=""
                     required=""
+                    onChange={formik.handleChange}
+                    value={formik.values.customer.zip}
                   />
                   <div className="invalid-feedback">Zip code required.</div>
                 </div>
@@ -276,16 +282,16 @@ const Checkout = () => {
               </div>
               <div className="row">
                 <div className="col-md-6 mb-3">
-                  <label htmlFor="cc-name">Name on card</label>
+                  <label htmlFor="nameOnCard">Name on card</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="cc-name"
-                    name="nameOnCard"
+                    id="nameOnCard"
+                    name="payment.nameOnCard"
                     placeholder=""
                     required=""
-                    value={values.nameOnCard}
-                    onChange={(e) => handleInputChange(e)}
+                    onChange={formik.handleChange}
+                    value={formik.values.payment.nameOnCard}
                   />
                   <small className="text-muted">
                     Full name as displayed on card
@@ -295,16 +301,18 @@ const Checkout = () => {
                   </div>
                 </div>
                 <div className="col-md-6 mb-3">
-                  <label htmlFor="cc-number">Credit card number</label>
+                  <label htmlFor="payment.creditCardNumber">
+                    Credit card number
+                  </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="cc-number"
-                    name="creditCardNumber"
+                    id="payment.creditCardNumber"
+                    name="payment.creditCardNumber"
                     placeholder=""
                     required=""
-                    value={values.creditCardNumber}
-                    onChange={(e) => handleInputChange(e)}
+                    onChange={formik.handleChange}
+                    value={formik.values.payment.creditCardNumber}
                   />
                   <div className="invalid-feedback">
                     Credit card number is required
@@ -313,32 +321,32 @@ const Checkout = () => {
               </div>
               <div className="row">
                 <div className="col-md-3 mb-3">
-                  <label htmlFor="cc-expiration">Expiration</label>
+                  <label htmlFor="payment.expiration">Expiration</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="cc-expiration"
-                    name="expiration"
+                    id="payment.expiration"
+                    name="payment.expiration"
                     placeholder=""
                     required=""
-                    value={values.expiration}
-                    onChange={(e) => handleInputChange(e)}
+                    onChange={formik.handleChange}
+                    value={formik.values.payment.expiration}
                   />
                   <div className="invalid-feedback">
                     Expiration date required
                   </div>
                 </div>
                 <div className="col-md-3 mb-3">
-                  <label htmlFor="cc-cvv">CVV</label>
+                  <label htmlFor="payment.ccvNumber">CVV</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="cc-cvv"
-                    name="ccvNumber"
+                    id="payment.ccvNumber"
+                    name="payment.ccvNumber"
                     placeholder=""
                     required=""
-                    value={values.ccvNumber}
-                    onChange={(e) => handleInputChange(e)}
+                    onChange={formik.handleChange}
+                    value={formik.values.payment.ccvNumber}
                   />
                   <div className="invalid-feedback">Security code required</div>
                 </div>
@@ -346,8 +354,7 @@ const Checkout = () => {
               <hr className="mb-4" />
               <button
                 className="btn btn-primary btn-lg btn-block"
-                type="button"
-                onClick={handleSubmit}
+                type="submit"
               >
                 Continue to checkout
               </button>

@@ -17,7 +17,7 @@ const TierItem = ({ slug, name, price, whatsIncluded }) => {
               <li>{item}</li>
             ))}
           </ul>
-          <Link to={"../checkout/" + slug}>
+          <Link to={"../checkout/" + slug + "/tier/" + name}>
             <button
               type="button"
               className="btn btn-lg btn-block btn-outline-primary"

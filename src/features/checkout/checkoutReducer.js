@@ -1,19 +1,25 @@
 import { CREATE_ORDER } from './checkoutConstants'
 
 const initialState = {
-    order: {
+    customer: {
         firstName: '',
         lastName: '',
         email: '',
         address: '',
         country: '',
         state: '',
-        zip: '',
-        payment: '',
+        zip: ''
+    },
+    payment: {
+        provider: 'PayPal',
         nameOnCard: '',
         creditCardNumber: '',
         expiration: '',
         ccvNumber: '',
+    },
+    purchase: {
+        service: '',
+        tier: '',
     }
 }
 
