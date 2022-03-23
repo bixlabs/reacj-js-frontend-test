@@ -1,14 +1,19 @@
-import React from 'react'
-import TierItem from './TierItem'
+import React from "react";
+import TierItem from "./TierItem";
 
-const TiersList = () => {
-    return (
-        <div className="card-deck mb-3 text-center">
-            <TierItem name="Free" price={0} />
-            <TierItem name="Pro" price={15} />
-            <TierItem name="Enterprise" price={29} />
-        </div>
-    )
-}
+const TiersList = ({ slug, tiers }) => {
+  return (
+    <div className="card-deck mb-3 text-center">
+      {tiers.map((tier) => (
+        <TierItem
+          slug={slug}
+          name={tier.name}
+          price={tier.price}
+          whatsIncluded={tier.whatsIncluded}
+        />
+      ))}
+    </div>
+  );
+};
 
-export default TiersList
+export default TiersList;

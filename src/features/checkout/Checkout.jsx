@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import createOrder from "./checkoutActions";
+import { createOrder } from "./checkoutActions";
 
 const Checkout = () => {
   const initialValues = {
@@ -21,7 +21,6 @@ const Checkout = () => {
   const [values, setValues] = useState(initialValues);
 
   const handleSubmit = () => {
-    console.log(values);
     dispatch(createOrder(values));
   };
 

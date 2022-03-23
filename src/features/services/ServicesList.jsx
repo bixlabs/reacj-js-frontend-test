@@ -6,7 +6,6 @@ import ServiceItem from "./ServiceItem";
 const ServicesList = () => {
   const { services } = useSelector((state) => state.services);
   const { loading } = useSelector((state) => state.async);
-  console.log(loading);
   if (loading) return <LoadingComponent />;
   return (
     <div className="row">

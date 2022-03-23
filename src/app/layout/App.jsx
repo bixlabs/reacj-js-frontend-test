@@ -13,7 +13,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="services/:service" element={<ServicePage />} />
-        <Route path="checkout" element={<Checkout />} />
+        <Route path="checkout/:service" element={<Checkout />} />
         <Route path="sandbox" element={<Sandbox />} />
         <Route path="*" element={<NotFound />} />
       </Route>

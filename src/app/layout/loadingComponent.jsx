@@ -4,7 +4,7 @@ const LoadingComponent = () => {
   return (
     <div
       style={{ marginRight: "auto", marginLeft: "auto" }}
-      class="spinner-grow"
+      className="spinner-grow"
       role="status"
     ></div>
   );

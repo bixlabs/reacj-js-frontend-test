@@ -24,7 +24,6 @@ export default function checkoutReducer(state = initialState, { type, payload })
                 ...state,
                 payload
             }
-            console.log(newOrder)
             return newOrder
         default:
             return state
