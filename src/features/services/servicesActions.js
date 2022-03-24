@@ -6,7 +6,7 @@ export const loadServices = () => async dispatch => {
     dispatch(asyncActionStart())
     try {
         const resp = await fetchServices()
-        const services = resp.data
+        const services = resp.data.services
         dispatch({ type: FETCH_SERVICES, payload: services })
         dispatch(asyncActionFinish())
     } catch (err) {
